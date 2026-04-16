@@ -1,7 +1,18 @@
-from pydantic import BaseModel, Field
+"""
+producto.py - Esquemas Pydantic para la entidad Producto.
+Separa los esquemas de creación (Request) de los de lectura (Response).
+"""
+
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 
+
 class ProductoBase(BaseModel):
+    """
+    Esquema base de Producto con los campos compartidos y validaciones.
+    Se usa como clase padre para Creación y Lectura.
+    """
+
     nombre: str
     slug: str
     descripcion: Optional[str] = None
@@ -11,10 +22,22 @@ class ProductoBase(BaseModel):
     esdestacado: bool = False
     idcategoria: int
 
+
 class ProductoCrear(ProductoBase):
+    """
+    Esquema para la creación de un nuevo producto (Request).
+    No incluye el campo idproducto ya que es autogenerado por la BD.
+    """
+
     pass
 
+
 class ProductoActualizar(BaseModel):
+    """
+    Esquema para la actualización parcial de un producto (PATCH).
+    Todos los campos son opcionales para soportar actualizaciones parciales.
+    """
+
     nombre: Optional[str] = None
     slug: Optional[str] = None
     descripcion: Optional[str] = None
@@ -24,5 +47,13 @@ class ProductoActualizar(BaseModel):
     esdestacado: Optional[bool] = None
     idcategoria: Optional[int] = None
 
-class ProductoResponse(ProductoBase):
+
+class ProductoLeer(ProductoBase):
+    """
+    Esquema de lectura de producto (Response).
+    Incluye el idproducto generado por la base de datos.
+    """
+
     idproducto: int
+
+    model_config = ConfigDict(from_attributes=True)

@@ -1,2 +1,1 @@
-from .categoria import CategoriaBase, CategoriaCrear, CategoriaActualizar, CategoriaResponse
-from .producto import ProductoBase, ProductoCrear, ProductoActualizar, ProductoResponse
+# Paquete de esquemas de validación (Request/Response)
